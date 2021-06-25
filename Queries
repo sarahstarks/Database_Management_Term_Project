@@ -1,0 +1,42 @@
+--Contributions by campus for the 2nd quarter
+select c.campus_name, cq.quarter2
+from campus c,campus_qtarget cq
+where cq.campus_id = c.campus_id
+
+--contributions made by foundation donors
+SELECT *
+FROM donation
+WHERE donor_id in
+ (SELECT donor_id
+ FROM DONOR
+ WHERE type_id = 103);
+
+--donor category contributions by program for the 3rd quarter
+select d.donor_id,t.description, d.program_id, p.name, d.amount
+from donation d, type t, program p, donor
+where d.donor_id = donor.donor_id
+and d.program_id = p.program_id
+and donor.type_id = t.type_id
+and d.donation_date >= '01-JUL-20'
+and d.donation_date <= '30-SEP-20'
+
+--low activity program report for September
+select p.name , d.amount
+from donation d, program p
+where p.program_id= d.program_id
+and donation_date >= '01-sep-20'
+and donation_date <= '30-sep-20'
+
+--Total dollar conreibution that Skywalker was responsible for
+select sum(amount), member_id
+from donation
+group by member_id
+having member_id = 123458;
+
+--average donation per corporate contribution
+SELECT avg(amount)
+FROM donation
+where donor_id in
+ (SELECT donor_id
+ FROM donor
+ WHERE type_id = 102);
